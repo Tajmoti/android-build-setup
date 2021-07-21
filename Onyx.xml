@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+    <remote name="kernel"
+            fetch="https://github.com"
+            revision="lineage-18.1"/>
+
+    <remote name="device"
+            fetch="https://github.com"
+            revision="lineage-18.1-onyxed"/>
+
+    <remote name="common"
+            fetch="https://github.com"
+            revision="lineage-18.1"/>
+
+    <remote name="vendor"
+            fetch="https://github.com"
+            revision="lineage-18.1" />
+
+    <!-- Kernel-->
+    <project path="kernel/nokia/sdm660" name="LineageOS/android_kernel_nokia_sdm660" remote="kernel" />
+
+    <!-- Device Trees-->
+    <project path="device/nokia/Onyx" name="Tajmoti/android_device_nokia_Onyx" remote="device" />
+
+    <!-- Vendor folders -->
+    <project path="vendor/nokia" name="TheMuppets/proprietary_vendor_nokia" remote="vendor" />
+
+    <!-- Common Trees-->
+    <project path="device/nokia/sdm660-common" name="LineageOS/android_device_nokia_sdm660-common" remote="common" />
+</manifest>
