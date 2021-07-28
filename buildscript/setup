@@ -1,0 +1,49 @@
+#!/bin/bash
+
+apt_command="apt -qq -o=Dpkg::Use-Pty=0"
+curl_command="curl -s"
+ccache_size="25G"
+lineage_branch="lineage-18.1"
+local_manifest_repo="https://github.com/Tajmoti/android-build-manifests.git"
+repo_sync_options="-c -j 12"
+manifest_file="manifest/B2N.xml"
+repo_path="android/lineage"
+
+script_dir="$(dirname "$0")"
+
+# Append to .bashrc manually!
+# export USE_CCACHE=1
+# export CCACHE_EXEC=/usr/bin/ccache
+
+# Python setup
+if [ ! -L /usr/bin/python ]; then
+    sudo ln -s /usr/bin/python3 /usr/bin/python
+fi
+
+# Dependencies
+sudo $apt_command -qq update
+sudo $apt_command -qq -y install bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev
+
+# CCache
+ccache -M $ccache_size
+
+# Repo tool
+mkdir -p ~/bin
+$curl_command -s https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+chmod a+x ~/bin/repo
+
+# Initialize the repository
+mkdir -p "$repo_path"
+pushd "$repo_path"
+echo "Initializing repo"
+repo init -u https://github.com/LineageOS/android.git -b $lineage_branch
+popd
+
+# Install the local manifest
+echo "Copying local manifest"
+mkdir -p "$repo_path/.repo/local_manifests/"
+cp "$manifest_file" "$repo_path/.repo/local_manifests/"
+
+# Sync up the sources
+echo "Syncing repo"
+source "$script_dir/repo_sync"

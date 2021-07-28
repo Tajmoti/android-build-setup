@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Script environment preparation
+source "$(dirname "$0")/prepare-shell"
+
+# Clean and sync the repository
+repo forall -c git reset --hard 
+repo forall -c git clean -fd
+repo sync -c -j 12 --force-sync |& tee -a "$log_dir/repo-sync-$current_time.log"

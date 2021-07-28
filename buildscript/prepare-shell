@@ -1,0 +1,24 @@
+#!/bin/bash
+env_setup_path="./build/envsetup.sh"
+
+# Error handling
+trap 'catch $? $LINENO' ERR
+catch() {
+    echo "Error $1 occurred on line $2"
+    exit $1
+}
+export -f catch
+
+# Build environment parameters
+export device_name="B2N"
+export device_manufacturer="nokia"
+export current_time="$(date +"%d-%m-%y %H:%M:%S")"
+export start_dir="$PWD"
+export log_dir="$start_dir/log"
+
+# Build environment preparation
+mkdir -p "$log_dir"
+! [ -z ${device_name+x} ]
+! [ -z ${device_manufacturer+x} ]
+pushd android/lineage
+[ -f "$env_setup_path" ] && source "$env_setup_path"

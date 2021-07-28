@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Script environment preparation
+source "$(dirname "$0")/prepare-shell"
+
+# Blob extraction
+pushd device/$device_manufacturer/$device_name
+./extract-files.sh |& tee "$log_dir/blobs-$current_time.log"
