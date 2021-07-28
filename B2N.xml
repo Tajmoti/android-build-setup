@@ -12,6 +12,10 @@
             fetch="https://github.com"
             revision="lineage-18.1"/>
 
+    <remote name="vendor"
+            fetch="https://github.com"
+            revision="lineage-18.1"/>
+
     <!-- Kernel-->
     <project path="kernel/nokia/sdm660" name="LineageOS/android_kernel_nokia_sdm660" remote="kernel" />
 
@@ -20,4 +24,7 @@
 
     <!-- Common Trees-->
     <project path="device/nokia/sdm660-common" name="Tajmoti/android_device_nokia_sdm660-common" remote="common" />
+
+    <!-- Vendor -->
+    <project path="vendor/nokia" name="Tajmoti/proprietary_vendor_nokia" remote="vendor" />
 </manifest>
