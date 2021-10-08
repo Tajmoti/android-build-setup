@@ -1,0 +1,37 @@
+#!/bin/bash
+
+usage() {
+    echo "Usage: <BLOB_LIST> <BLOB_SRC_DIR>"
+    exit 1
+}
+
+if [ "$#" -ne 2 ]; then
+    usage
+fi
+
+if ! [ -f "$1" ]; then
+	echo "Blob list must be a regular file"
+    usage
+fi
+
+if ! [ -d "$2" ]; then
+	echo "Blob directory is not valid"
+    usage
+fi
+
+# File containing blob paths
+blob_path_list="$1"
+# Directory from which to pull the blobs
+blob_dir="$2"
+# Directory where to place the blobs
+target_dir="blobs/"
+mkdir -p "$target_dir"
+# Starting directory of the script
+start_dir="$(pwd)"
+
+pushd "$blob_dir"
+while IFS="" read -r p || [ -n "$p" ]; do
+  echo "$p"
+  cp --parents "$p" "$start_dir/$target_dir" || echo "$p" >> "$start_dir/missing_blobs.txt"
+done < "$start_dir/$blob_path_list"
+popd
